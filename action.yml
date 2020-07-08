@@ -1,0 +1,29 @@
+name: 'PR Checklist Reminder'
+description: "This GitHub Action reminds you to complete required checklist items by creating an erroring Github Commit Status for each required checklist item in the PR description that hasn't been checked off"
+author: 'Michael Bylstra'
+inputs:
+  repo-token:
+    description: 'Token for the repo. Can be passed in using {{ secrets.GITHUB_TOKEN }}'
+    required: true
+  github-status-context:
+    description: 'The name for the Github Status "context", which is the part of the status in bold. You can customise this text'
+    required: false
+    default: "TODO"
+  checklist-item-1:
+    description: 'Text for a checklist item you wish to be checked'
+    required: false
+  checklist-item-2:
+    description: 'Text for a checklist item you wish to be checked'
+    required: false
+  checklist-item-3:
+    description: 'Text for a checklist item you wish to be checked'
+    required: false
+  checklist-item-4:
+    description: 'Text for a checklist item you wish to be checked'
+    required: false
+  checklist-item-5:
+    description: 'Text for a checklist item you wish to be checked'
+    required: false
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
