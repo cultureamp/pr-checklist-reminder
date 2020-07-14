@@ -39,13 +39,19 @@ export type Args = {
   repoToken: string;
   checklistItem1: string;
   checklistItem2: string;
+  checklistItem3: string;
+  checklistItem4: string;
+  checklistItem5: string;
 };
 
 function getAndValidateArgs(): Args {
   return {
     repoToken: core.getInput("repo-token", { required: true }),
     checklistItem1: core.getInput("checklist-item-1", { required: false }),
-    checklistItem2: core.getInput("checklist-item-2", { required: false })
+    checklistItem2: core.getInput("checklist-item-2", { required: false }),
+    checklistItem3: core.getInput("checklist-item-3", { required: false }),
+    checklistItem4: core.getInput("checklist-item-4", { required: false }),
+    checklistItem5: core.getInput("checklist-item-5", { required: false })
   };
 }
 

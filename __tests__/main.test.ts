@@ -145,16 +145,11 @@ describe("makeWhitelistFromArgs", () => {
     const args = {
       repoToken: "acbdefg",
       checklistItem1: "item 1",
-      checklistItem2: "item 2"
+      checklistItem2: "item 2",
+      checklistItem3: "item 3",
+      checklistItem4: "",
+      checklistItem5: ""
     };
-    expect(makeWhitelistFromArgs(args)).toEqual(["item 1", "item 2"]);
-  });
-  it("ignores not included checklist item args", async () => {
-    const args = {
-      repoToken: "acbdefg",
-      checklistItem1: "item 1",
-      checklistItem2: ""
-    };
-    expect(makeWhitelistFromArgs(args)).toEqual(["item 1"]);
+    expect(makeWhitelistFromArgs(args)).toEqual(["item 1", "item 2", "item 3"]);
   });
 });
