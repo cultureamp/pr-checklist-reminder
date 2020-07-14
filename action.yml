@@ -8,6 +8,12 @@ inputs:
   repo-token:
     description: 'Token for the repo. Can be passed in using {{ secrets.GITHUB_TOKEN }}'
     required: true
+  checklist-item-1:
+    description: 'Text for a checklist item you wish to be checked'
+    required: false
+  checklist-item-2:
+    description: 'Text for a checklist item you wish to be checked'
+    required: false
 runs:
   using: 'node12'
   main: 'lib/main.js'

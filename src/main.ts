@@ -1,12 +1,6 @@
 import * as core from "@actions/core";
 import * as github from "@actions/github";
 
-export const whitelist = [
-  "This impacts experience and I got a design review",
-  "I've considered likely risks of these changes and got someone else to QA as appropriate",
-  "I have or will communicate these changes to the front end practice"
-];
-
 async function run() {
   try {
     const args = getAndValidateArgs();
@@ -17,7 +11,7 @@ async function run() {
     }
     const checklistItems = joinWithWhitelist(
       parseMarkdownChecklistItems(pullRequest.body || ""),
-      whitelist
+      makeWhitelistFromArgs(args)
     );
     const specs = getGithubStatusSpecs(checklistItems);
     let i = 1;
@@ -41,13 +35,17 @@ async function createGithubStatus({ pullRequest, client, spec, context }) {
   });
 }
 
-type Args = {
+export type Args = {
   repoToken: string;
+  checklistItem1: string;
+  checklistItem2: string;
 };
 
 function getAndValidateArgs(): Args {
   return {
-    repoToken: core.getInput("repo-token", { required: true })
+    repoToken: core.getInput("repo-token", { required: true }),
+    checklistItem1: core.getInput("checklist-item-1", { required: false }),
+    checklistItem2: core.getInput("checklist-item-2", { required: false })
   };
 }
 
@@ -92,8 +90,8 @@ export function joinWithWhitelist(
       checklistItems,
       whitelistDescription
     );
-    if (checklistItem != null) {
-      return checklistItem as ChecklistItem;
+    if (checklistItem !== undefined) {
+      return checklistItem;
     } else {
       /* Missing whitelist checkbox items are always set to true. This is to avoid an
        * edge case where it would be impossible to merge the PR: if the PR initially
@@ -123,6 +121,15 @@ export function getGithubStatusSpecs(
     success: checked,
     id: index + 1
   }));
+}
+
+export function makeWhitelistFromArgs(args: Args): string[] {
+  const checklistItemKeys = ["checklistItem1", "checklistItem2"];
+  const reducer = (accumulator: string[], argKey: string) => {
+    const suppliedValue = args[argKey];
+    return suppliedValue ? accumulator.concat(suppliedValue) : accumulator;
+  };
+  return checklistItemKeys.reduce(reducer, []);
 }
 
 run();

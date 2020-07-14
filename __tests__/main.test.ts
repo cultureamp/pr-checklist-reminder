@@ -5,7 +5,7 @@ import {
   joinWithWhitelist,
   getGithubStatusSpecs,
   findChecklistItem,
-  whitelist
+  makeWhitelistFromArgs
 } from "../src/main";
 
 describe("parseMarkdownChecklistItems", () => {
@@ -140,42 +140,21 @@ describe("findChecklistItem", () => {
   });
 });
 
-const realExample = `
-- [ ] I have gotten a design review from someone else if this introduces user facing changes
-- [ ] I have gotten someone else to QA this if the changes are significant
-- [x] I or someone else has QA'ed this in IE11 if it feels necessary
-
-### Other stuff
-- [x] This is not a whitelisted Kaizen contributor item
-`;
-
-describe("integration test", () => {
-  it("tests the main functions together", async () => {
-    const checklistItems = joinWithWhitelist(
-      parseMarkdownChecklistItems(realExample),
-      whitelist
-    );
-    const specs = getGithubStatusSpecs(checklistItems);
-
-    expect(specs).toEqual([
-      {
-        description:
-          "I have gotten a design review from someone else if this introduces user facing changes",
-        success: false,
-        id: 1
-      },
-      {
-        description:
-          "I have gotten someone else to QA this if the changes are significant",
-        success: false,
-        id: 2
-      },
-      {
-        description:
-          "I or someone else has QA'ed this in IE11 if it feels worth it",
-        success: true,
-        id: 3
-      }
-    ]);
+describe("makeWhitelistFromArgs", () => {
+  it("makes a list of checklist item strings from supplied Github action args", async () => {
+    const args = {
+      repoToken: "acbdefg",
+      checklistItem1: "item 1",
+      checklistItem2: "item 2"
+    };
+    expect(makeWhitelistFromArgs(args)).toEqual(["item 1", "item 2"]);
+  });
+  it("ignores not included checklist item args", async () => {
+    const args = {
+      repoToken: "acbdefg",
+      checklistItem1: "item 1",
+      checklistItem2: ""
+    };
+    expect(makeWhitelistFromArgs(args)).toEqual(["item 1"]);
   });
 });

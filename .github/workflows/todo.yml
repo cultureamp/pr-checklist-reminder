@@ -19,3 +19,5 @@ jobs:
     - uses: ./
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
+        checklist-item-1: "item one":
+        checklist-item-2: "item two":
