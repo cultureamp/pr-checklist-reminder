@@ -1,1 +1,1 @@
-npm run build && git add . && git commit -m 'devving' && git push
+npm run build && git add . && git commit -m 'build for release' && git push
