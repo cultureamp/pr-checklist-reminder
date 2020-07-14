@@ -8,6 +8,12 @@ inputs:
   repo-token:
     description: 'Token for the repo. Can be passed in using {{ secrets.GITHUB_TOKEN }}'
     required: true
+  github-status-context:
+    description: 'The name for the Github Status "context", which is the part of the status in bold. You can customise this text'
+    required: false
+    default: "Checklist Item"
+
+
   checklist-item-1:
     description: 'Text for a checklist item you wish to be checked'
     required: false

@@ -16,7 +16,7 @@ async function run() {
     const specs = getGithubStatusSpecs(checklistItems);
     let i = 1;
     for (const spec of specs) {
-      const context = `Kaizen Contributor TODO (${i})`;
+      const context = `${args.githubStatusContext} (${i})`;
       await createGithubStatus({ pullRequest, client, spec, context });
       i++;
     }
@@ -37,6 +37,7 @@ async function createGithubStatus({ pullRequest, client, spec, context }) {
 
 export type Args = {
   repoToken: string;
+  githubStatusContext: string;
   checklistItem1: string;
   checklistItem2: string;
   checklistItem3: string;
@@ -47,6 +48,9 @@ export type Args = {
 function getAndValidateArgs(): Args {
   return {
     repoToken: core.getInput("repo-token", { required: true }),
+    githubStatusContext: core.getInput("github-status-context", {
+      required: false
+    }),
     checklistItem1: core.getInput("checklist-item-1", { required: false }),
     checklistItem2: core.getInput("checklist-item-2", { required: false }),
     checklistItem3: core.getInput("checklist-item-3", { required: false }),

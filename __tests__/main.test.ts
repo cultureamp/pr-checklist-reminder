@@ -144,6 +144,7 @@ describe("makeWhitelistFromArgs", () => {
   it("makes a list of checklist item strings from supplied Github action args", async () => {
     const args = {
       repoToken: "acbdefg",
+      githubStatusContext: "",
       checklistItem1: "item 1",
       checklistItem2: "item 2",
       checklistItem3: "item 3",
