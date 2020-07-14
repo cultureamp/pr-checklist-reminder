@@ -2,9 +2,9 @@ import * as core from "@actions/core";
 import * as github from "@actions/github";
 
 export const whitelist = [
-  "I have gotten a design review from someone else if this introduces user facing changes",
-  "I have gotten someone else to QA this if the changes are significant",
-  "I or someone else has QA'ed this in IE11 if it feels worth it"
+  "This impacts experience and I got a design review",
+  "I've considered likely risks of these changes and got someone else to QA as appropriate",
+  "I have or will communicate these changes to the front end practice"
 ];
 
 async function run() {
