@@ -21,3 +21,4 @@ jobs:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         checklist-item-1: "item one"
         checklist-item-2: "item two"
+        checklist-item-3: "item three"

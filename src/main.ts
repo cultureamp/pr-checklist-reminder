@@ -124,7 +124,13 @@ export function getGithubStatusSpecs(
 }
 
 export function makeWhitelistFromArgs(args: Args): string[] {
-  const checklistItemKeys = ["checklistItem1", "checklistItem2"];
+  const checklistItemKeys = [
+    "checklistItem1",
+    "checklistItem2",
+    "checklistItem3",
+    "checklistItem4",
+    "checklistItem5"
+  ];
   const reducer = (accumulator: string[], argKey: string) => {
     const suppliedValue = args[argKey];
     return suppliedValue ? accumulator.concat(suppliedValue) : accumulator;
