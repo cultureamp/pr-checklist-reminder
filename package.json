@@ -1,8 +1,8 @@
 {
-  "name": "kaizen-contributor-checklist",
-  "version": "0.0.0",
+  "name": "pr-checklist-reminders",
+  "version": "1.0.0",
   "private": true,
-  "description": "Kaizen Contributor Checklist: checklist checking bot for Github (TODO)",
+  "description": "This GitHub Action reminds you to complete required checklist items by creating an erroring Github Commit Status for each required checklist item in the PR description that hasn't been checked off",
   "main": "lib/main.js",
   "scripts": {
     "build": "tsc",
