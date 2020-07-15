@@ -1,12 +1,12 @@
 # PR Checklist Reminders
 
-This Github Action reminds you to complete required checklist items by setting a (Github error status)[https://developer.github.com/v3/repos/statuses/] for each required checklist item in the PR description that hasn't been checked off.
+This Github Action reminds you to complete required checklist items by setting a [Github error status](https://developer.github.com/v3/repos/statuses/) for each required checklist item in the PR description that hasn't been checked off.
 
 This is intended to be used in conjunction with a Pull Request Template containing checklist items.
 
 ## Using the Action
 
-1. Create a (PR Template)[https://docs.github.com/en/github/building-a-strong-community/creating-a-pull-request-template-for-your-repository] containing some checklist items. When you configure the Github Action you can configure which of these checklist items you would like to make required.
+1. Create a [PR Template](https://docs.github.com/en/github/building-a-strong-community/creating-a-pull-request-template-for-your-repository) containing some checklist items. When you configure the Github Action you can configure which of these checklist items you would like to make required.
 
 
 2. Create a new workflow YAML file under `.github/workflows/` folder.
