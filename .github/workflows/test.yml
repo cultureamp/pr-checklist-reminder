@@ -19,5 +19,9 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - uses: ./
-      with: 
-        milliseconds: 1000
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        github-status-context: "Custom Name"
+        checklist-item-1: "item one"
+        checklist-item-2: "item two"
+        checklist-item-3: "item three"
