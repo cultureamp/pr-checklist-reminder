@@ -1,4 +1,4 @@
-# Kaizen Contributor Checklist
+# PR Checklist Reminder
 This action parses PR description and set commit status to success if there are no unfilled checkboxes
 related to Kaizen contributions.
 
@@ -9,7 +9,7 @@ Create a new workflow YAML file under `.github/workflows/` folder.
 Example:
 
 ```
-name: Kaizen Contributor Checklist
+name: PR Checklist Reminder
 
 on:
   pull_request:
@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: mbylstra/kaizen-contributor-checklist@1.0.0
+    - uses: cultureamp/pr-checklist-reminder@1.0.0
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
 ```
