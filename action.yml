@@ -1,5 +1,5 @@
 name: 'PR Checklist Reminder'
-description: 'TODO'
+description: "This GitHub Action reminds you to complete required checklist items by creating an erroring Github Commit Status for each required checklist item in the PR description that hasn't been checked off"
 branding:
   icon: 'check-square'
   color: 'green'
@@ -11,7 +11,7 @@ inputs:
   github-status-context:
     description: 'The name for the Github Status "context", which is the part of the status in bold. You can customise this text'
     required: false
-    default: "Checklist Item"
+    default: "TODO"
 
 
   checklist-item-1:
