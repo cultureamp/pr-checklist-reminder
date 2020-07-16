@@ -1,5 +1,5 @@
-import * as core from "@actions/core";
-import * as github from "@actions/github";
+const github = require("@actions/github");
+const core = require("@actions/core");
 
 async function run() {
   try {
@@ -16,26 +16,39 @@ async function run() {
     const specs = getGithubStatusSpecs(checklistItems);
     let i = 1;
     for (const spec of specs) {
-      const context = `${args.githubStatusContext} (${i})`;
-      await createGithubStatus({ pullRequest, client, spec, context });
+      const statusContext = `${args.githubStatusContext} (${i})`;
+      await createGithubStatus({ pullRequest, client, spec, statusContext });
       i++;
     }
   } catch (error) {
     core.setFailed(error.message);
   }
 }
-async function createGithubStatus({ pullRequest, client, spec, context }) {
+
+type CreateGithubStatusArgs = {
+  pullRequest: any;
+  client: any;
+  spec: GithubStatusSpec;
+  statusContext: string;
+};
+async function createGithubStatus({
+  pullRequest,
+  client,
+  spec,
+  statusContext
+}: CreateGithubStatusArgs) {
   return client.repos.createStatus({
     owner: github.context.issue.owner,
     repo: github.context.issue.repo,
     sha: pullRequest.head.sha,
     state: spec.success ? "success" : "error",
     description: spec.description,
-    context: context
+    context: statusContext
   });
 }
 
-export type Args = {
+export interface ActionArgs {
+  [index: string]: string;
   repoToken: string;
   githubStatusContext: string;
   checklistItem1: string;
@@ -43,9 +56,9 @@ export type Args = {
   checklistItem3: string;
   checklistItem4: string;
   checklistItem5: string;
-};
+}
 
-function getAndValidateArgs(): Args {
+function getAndValidateArgs(): ActionArgs {
   return {
     repoToken: core.getInput("repo-token", { required: true }),
     githubStatusContext: core.getInput("github-status-context", {
@@ -81,7 +94,7 @@ function notNull<TValue>(value: TValue | null): value is TValue {
 
 export function parseMarkdownChecklistItem(
   markdown: string
-): (ChecklistItem | null) {
+): ChecklistItem | null {
   const regex = /^\- \[( |x)\] (.*)/;
   const matches = regex.exec(markdown);
   if (matches) {
@@ -133,8 +146,8 @@ export function getGithubStatusSpecs(
   }));
 }
 
-export function makeWhitelistFromArgs(args: Args): string[] {
-  const checklistItemKeys = [
+export function makeWhitelistFromArgs(args: ActionArgs): string[] {
+  const checklistItemKeys: string[] = [
     "checklistItem1",
     "checklistItem2",
     "checklistItem3",
