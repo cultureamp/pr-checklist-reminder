@@ -50,3 +50,6 @@ Only checklist items listed in the config will get Github Status reminders.  You
 - push the tag: `git push origin 1.2.3`
 - create a release from the tag from the Github UI
 - the version is now published and can now be used in a workflow as `cultureamp/pr-checklist-reminder@1.2.3`
+
+
+**This file was edited just for a Demo PR - Do not merge this change! **
