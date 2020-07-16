@@ -23,7 +23,7 @@
     "node",
     "setup"
   ],
-  "author": "GitHub",
+  "author": "Michael Bylstra (Culture Amp)",
   "license": "MIT",
   "dependencies": {
     "@actions/core": "^1.2.0",
