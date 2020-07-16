@@ -1,11 +1,10 @@
-name: Kaizen Contributor Checklist
-
-on:
+name: "action-test"
+on: # rebuild any PRs and main branch changes
   pull_request:
     types: [opened, synchronize, reopened, edited]
 
 jobs:
-  check:
+  test: # make sure the action works on a clean machine without building
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
