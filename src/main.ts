@@ -36,7 +36,7 @@ async function createGithubStatus({
   client,
   spec,
   statusContext
-}: CreateGithubStatusArgs): GithubStatusSpec {
+}: CreateGithubStatusArgs) {
   return client.repos.createStatus({
     owner: github.context.issue.owner,
     repo: github.context.issue.repo,
