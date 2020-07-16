@@ -9,5 +9,5 @@ show up as Github Commit Statuses.
 These checklist items are not included. You can use them to test
 that they aren't being included.
 
-- [ ] do not included me
+- [ ] do not include me
 - [ ] I don't need to be checked off
