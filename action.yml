@@ -1,8 +1,5 @@
 name: 'PR Checklist Reminder'
 description: "This GitHub Action reminds you to complete required checklist items by creating an erroring Github Commit Status for each required checklist item in the PR description that hasn't been checked off"
-branding:
-  icon: 'check-square'
-  color: 'green'
 author: 'Michael Bylstra'
 inputs:
   repo-token:
