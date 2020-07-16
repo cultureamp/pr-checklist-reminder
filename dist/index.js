@@ -936,19 +936,24 @@ const github = __webpack_require__(469);
 const core = __webpack_require__(393);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
-        const args = getAndValidateArgs();
-        const octokit = github.getOctokit(args.repoToken);
-        const pullRequest = github.context.payload.pull_request;
-        if (!pullRequest) {
-            throw new Error('Payload is missing pull_request.');
+        try {
+            const args = getAndValidateArgs();
+            const octokit = github.getOctokit(args.repoToken);
+            const pullRequest = github.context.payload.pull_request;
+            if (!pullRequest) {
+                throw new Error('Payload is missing pull_request.');
+            }
+            const checklistItems = joinWithWhitelist(parseMarkdownChecklistItems(pullRequest.body || ''), makeWhitelistFromArgs(args));
+            const specs = getGithubStatusSpecs(checklistItems);
+            let i = 1;
+            for (const spec of specs) {
+                const statusContext = `${args.githubStatusContext} (${i})`;
+                createGithubStatus({ octokit, pullRequest, spec, statusContext });
+                i++;
+            }
         }
-        const checklistItems = joinWithWhitelist(parseMarkdownChecklistItems(pullRequest.body || ''), makeWhitelistFromArgs(args));
-        const specs = getGithubStatusSpecs(checklistItems);
-        let i = 1;
-        for (const spec of specs) {
-            const statusContext = `${args.githubStatusContext} (${i})`;
-            createGithubStatus({ octokit, pullRequest, spec, statusContext });
-            i++;
+        catch (error) {
+            core.setFailed(error.message);
         }
     });
 }
