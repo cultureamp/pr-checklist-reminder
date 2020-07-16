@@ -1,28 +1,24 @@
 import github from '@actions/github'
 import core from '@actions/core'
 
-async function run() {
-  try {
-    const args = getAndValidateArgs()
-    const octokit = github.getOctokit(args.repoToken)
-    const pullRequest = github.context.payload.pull_request
+async function run(): Promise<void> {
+  const args = getAndValidateArgs()
+  const octokit = github.getOctokit(args.repoToken)
+  const pullRequest = github.context.payload.pull_request
 
-    if (!pullRequest) {
-      throw new Error('Payload is missing pull_request.')
-    }
-    const checklistItems = joinWithWhitelist(
-      parseMarkdownChecklistItems(pullRequest.body || ''),
-      makeWhitelistFromArgs(args)
-    )
-    const specs = getGithubStatusSpecs(checklistItems)
-    let i = 1
-    for (const spec of specs) {
-      const statusContext = `${args.githubStatusContext} (${i})`
-      createGithubStatus({octokit, pullRequest, spec, statusContext})
-      i++
-    }
-  } catch (error) {
-    core.setFailed(error.message)
+  if (!pullRequest) {
+    throw new Error('Payload is missing pull_request.')
+  }
+  const checklistItems = joinWithWhitelist(
+    parseMarkdownChecklistItems(pullRequest.body || ''),
+    makeWhitelistFromArgs(args)
+  )
+  const specs = getGithubStatusSpecs(checklistItems)
+  let i = 1
+  for (const spec of specs) {
+    const statusContext = `${args.githubStatusContext} (${i})`
+    createGithubStatus({octokit, pullRequest, spec, statusContext})
+    i++
   }
 }
 
@@ -37,7 +33,7 @@ async function createGithubStatus({
   pullRequest,
   spec,
   statusContext
-}: CreateGithubStatusArgs) {
+}: CreateGithubStatusArgs): Promise<void> {
   return octokit.repos.createCommitStatus({
     owner: github.context.issue.owner,
     repo: github.context.issue.repo,
