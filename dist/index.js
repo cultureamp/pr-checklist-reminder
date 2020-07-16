@@ -930,16 +930,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.makeWhitelistFromArgs = exports.getGithubStatusSpecs = exports.findChecklistItem = exports.joinWithWhitelist = exports.parseMarkdownChecklistItem = exports.parseMarkdownChecklistItems = exports.truncateDescriptionToMeetGithubRequirements = void 0;
-const github = __webpack_require__(469);
-const core = __webpack_require__(393);
+const github_1 = __importDefault(__webpack_require__(469));
+const core_1 = __importDefault(__webpack_require__(393));
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const args = getAndValidateArgs();
-            const client = new github.GitHub(args.repoToken);
-            const pullRequest = github.context.payload.pull_request;
+            const octokit = github_1.default.getOctokit(args.repoToken);
+            const pullRequest = github_1.default.context.payload.pull_request;
             if (!pullRequest) {
                 throw new Error('Payload is missing pull_request.');
             }
@@ -948,20 +951,20 @@ function run() {
             let i = 1;
             for (const spec of specs) {
                 const statusContext = `${args.githubStatusContext} (${i})`;
-                createGithubStatus({ pullRequest, client, spec, statusContext });
+                createGithubStatus({ octokit, pullRequest, spec, statusContext });
                 i++;
             }
         }
         catch (error) {
-            core.setFailed(error.message);
+            core_1.default.setFailed(error.message);
         }
     });
 }
-function createGithubStatus({ pullRequest, client, spec, statusContext }) {
+function createGithubStatus({ octokit, pullRequest, spec, statusContext }) {
     return __awaiter(this, void 0, void 0, function* () {
-        return client.repos.createStatus({
-            owner: github.context.issue.owner,
-            repo: github.context.issue.repo,
+        return octokit.repos.createCommitStatus({
+            owner: github_1.default.context.issue.owner,
+            repo: github_1.default.context.issue.repo,
             sha: pullRequest.head.sha,
             state: spec.success ? 'success' : 'error',
             description: spec.description,
@@ -971,15 +974,15 @@ function createGithubStatus({ pullRequest, client, spec, statusContext }) {
 }
 function getAndValidateArgs() {
     return {
-        repoToken: core.getInput('repo-token', { required: true }),
-        githubStatusContext: core.getInput('github-status-context', {
+        repoToken: core_1.default.getInput('repo-token', { required: true }),
+        githubStatusContext: core_1.default.getInput('github-status-context', {
             required: false
         }),
-        checklistItem1: core.getInput('checklist-item-1', { required: false }),
-        checklistItem2: core.getInput('checklist-item-2', { required: false }),
-        checklistItem3: core.getInput('checklist-item-3', { required: false }),
-        checklistItem4: core.getInput('checklist-item-4', { required: false }),
-        checklistItem5: core.getInput('checklist-item-5', { required: false })
+        checklistItem1: core_1.default.getInput('checklist-item-1', { required: false }),
+        checklistItem2: core_1.default.getInput('checklist-item-2', { required: false }),
+        checklistItem3: core_1.default.getInput('checklist-item-3', { required: false }),
+        checklistItem4: core_1.default.getInput('checklist-item-4', { required: false }),
+        checklistItem5: core_1.default.getInput('checklist-item-5', { required: false })
     };
 }
 function truncateDescriptionToMeetGithubRequirements(description) {

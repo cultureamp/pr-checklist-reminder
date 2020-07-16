@@ -27,8 +27,8 @@ async function run() {
 }
 
 interface CreateGithubStatusArgs {
-  octokit: any,
-  pullRequest: any,
+  octokit: any
+  pullRequest: any
   spec: GithubStatusSpec
   statusContext: string
 }
