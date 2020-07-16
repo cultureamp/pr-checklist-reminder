@@ -1,11 +1,12 @@
-const github = require('@actions/github')
-const core = require('@actions/core')
+import github from '@actions/github'
+import core from '@actions/core'
 
 async function run() {
   try {
     const args = getAndValidateArgs()
-    const client = new github.GitHub(args.repoToken)
+    const octokit = github.getOctokit(args.repoToken)
     const pullRequest = github.context.payload.pull_request
+
     if (!pullRequest) {
       throw new Error('Payload is missing pull_request.')
     }
@@ -17,7 +18,7 @@ async function run() {
     let i = 1
     for (const spec of specs) {
       const statusContext = `${args.githubStatusContext} (${i})`
-      createGithubStatus({pullRequest, client, spec, statusContext})
+      createGithubStatus({octokit, pullRequest, spec, statusContext})
       i++
     }
   } catch (error) {
@@ -26,18 +27,18 @@ async function run() {
 }
 
 interface CreateGithubStatusArgs {
-  pullRequest: any
-  client: any
+  octokit: any,
+  pullRequest: any,
   spec: GithubStatusSpec
   statusContext: string
 }
 async function createGithubStatus({
+  octokit,
   pullRequest,
-  client,
   spec,
   statusContext
 }: CreateGithubStatusArgs) {
-  return client.repos.createStatus({
+  return octokit.repos.createCommitStatus({
     owner: github.context.issue.owner,
     repo: github.context.issue.repo,
     sha: pullRequest.head.sha,
