@@ -34,3 +34,19 @@ jobs:
 ```
 
 Only checklist items listed in the config will get Github Status reminders.  You can create up to 5 checklist items, but we recommend no more than 3, or contributors will be likely to ignore them.
+
+## Contributing to this project
+
+### Development workflow
+
+- Create a new branch with any name.
+- You will only be able to see the action working within Github (there is no way to run it locally in development). You must prepare a build prior to pushing to github or your changes won't be run on Github. To do this you can run `npm run push-new-build` which is an alias for `"push-new-build": "npm run all && git add dist/* && git commit -m 'build' && git push"`. This will create the build file (compiled JS), create a commit named "build" and push this to Github.
+
+### Publishing a new release
+
+- merge the PR
+- check out master locally and `git pull`
+- create a tag for an appropriate version such as `git tag 1.2.3`
+- push the tag: `git push origin 1.2.3`
+- create a release from the tag from the Github UI
+- the version is now published and can now be used in a workflow as `cultureamp/pr-checklist-reminder@1.2.3`
