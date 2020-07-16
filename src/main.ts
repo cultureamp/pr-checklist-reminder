@@ -2,23 +2,27 @@ const github = require('@actions/github')
 const core = require('@actions/core')
 
 async function run(): Promise<void> {
-  const args = getAndValidateArgs()
-  const octokit = github.getOctokit(args.repoToken)
-  const pullRequest = github.context.payload.pull_request
+  try {
+    const args = getAndValidateArgs()
+    const octokit = github.getOctokit(args.repoToken)
+    const pullRequest = github.context.payload.pull_request
 
-  if (!pullRequest) {
-    throw new Error('Payload is missing pull_request.')
-  }
-  const checklistItems = joinWithWhitelist(
-    parseMarkdownChecklistItems(pullRequest.body || ''),
-    makeWhitelistFromArgs(args)
-  )
-  const specs = getGithubStatusSpecs(checklistItems)
-  let i = 1
-  for (const spec of specs) {
-    const statusContext = `${args.githubStatusContext} (${i})`
-    createGithubStatus({octokit, pullRequest, spec, statusContext})
-    i++
+    if (!pullRequest) {
+      throw new Error('Payload is missing pull_request.')
+    }
+    const checklistItems = joinWithWhitelist(
+      parseMarkdownChecklistItems(pullRequest.body || ''),
+      makeWhitelistFromArgs(args)
+    )
+    const specs = getGithubStatusSpecs(checklistItems)
+    let i = 1
+    for (const spec of specs) {
+      const statusContext = `${args.githubStatusContext} (${i})`
+      createGithubStatus({octokit, pullRequest, spec, statusContext})
+      i++
+    }
+  } catch (error) {
+    core.setFailed(error.message)
   }
 }
 
